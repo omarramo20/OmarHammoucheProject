@@ -20,7 +20,7 @@ class Model{
 		    sourie.x *= 0.02; // to avoid teleportation , to minimize the distance traveled
 		    sourie.y *= 0.02;
 
-		    let gamer = gamers.get(socket.id);
+		    let gamer = gamers.get(socket.id); 
 		    //gamer.r =   
 		    
 		    let testX = gamer.x + sourie.x; // if the next coordinates

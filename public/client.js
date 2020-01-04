@@ -37,7 +37,7 @@ createCanvas(900,900);
 
 }
 
-function send(){  
+function send(){   
 
 	let	data = {
 		x:mouseX,
