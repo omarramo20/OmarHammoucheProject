@@ -1,7 +1,7 @@
 class Circle{
 
   constructor(x,y,diametre ) {
-    //this.pos = createVector(x,y);
+    //this.pos = createVector(x,y);  
 
     this.x = x;
     this.y = y;

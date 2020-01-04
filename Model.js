@@ -21,7 +21,7 @@ class Model{
 		    sourie.y *= 0.02;
 
 		    let gamer = gamers.get(socket.id);
-		    //gamer.r = 
+		    //gamer.r =   
 		    
 		    let testX = gamer.x + sourie.x; // if the next coordinates
 		    let testY = gamer.y + sourie.y;
