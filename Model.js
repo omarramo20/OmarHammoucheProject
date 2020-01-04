@@ -81,46 +81,45 @@ class Model{
 		this.Compare =(socket)=> {
 			let currentPlayer  = gamers.get(socket.id);
 			let distance;
-			for (var [key, value] of gamers) {
-			    	if(key != socket.id){ //  // to avoid the comparaison with him self( client), 
-			    		// else the circle will grow all the time and also will delete him self
-				// calculate distance between two points( circles)
-		    	distance = Math.pow((currentPlayer.x-value.x),2)+ Math.pow((currentPlayer.y-value.y),2); 
-		    	distance = Math.sqrt(distance);
-		    	
-		    	console.log("");
-		    	console.log("currentPlayer.r : "+currentPlayer.r+ " value.r : "+value.r);
-		    	console.log("distance abs : "+ distance);
-		    	console.log("both : "+ (value.r /2+ currentPlayer.r/2));
-		    	// currentPlayer.r/2 cause r isn't the the ray , it's the diameter
 
-		    	
-				    if(distance < currentPlayer.r/2 + value.r/2){
-				    	console.log("petite--------------------------------------------------------------------------------");
-				      currentPlayer.r += value.r* 0.1;
-				      gamers.set(socket.id,currentPlayer);
-				      console.log("distance abs : "+ distance);
-				    //  if(key != socket.id) // to avoid the deletion of the play because the key will be the sam as the socket id
-				      if(currentPlayer.r < value.r){
-				      	this.deleteCircle(socket.id);
-				  		/*currentPlayer.colorR = 255;
-					  	currentPlayer.colorG = 0;
-					  	currentPlayer.colorB = 255;
-					  	currentPlayer.r = 0;
 
-					  	//fill(50); // i have to do that in the client !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-						//text("Game over for you", currentPlayer.x, currentPlayer.y, 70, 80);*/
+			for (var [key, value] of gamers) { 
+
+			    if(key != socket.id){ // to avoid the comparaison with him self( client), 
+			    					// else the circle will grow all the time and also will delete him self
+					// calculate distance between two points( circles)
+			    	distance = Math.pow((currentPlayer.x-value.x),2)+ Math.pow((currentPlayer.y-value.y),2); 
+			    	distance = Math.sqrt(distance);
+			    	
+			    	console.log("");
+			    	console.log("currentPlayer.r : "+currentPlayer.r+ " value.r : "+value.r);
+			    	console.log("distance abs : "+ distance);
+			    	console.log("both : "+ (value.r /2+ currentPlayer.r/2));
+
+			    	console.log("gamers size "+ gamers.size);
+			    	
+					if(distance < currentPlayer.r/2 + value.r/2){
+					    console.log("petite--------------------------------------------------------------------------------");
+						currentPlayer.r += value.r* 0.1;
+						gamers.set(socket.id,currentPlayer);
+						console.log("distance abs : "+ distance);
+					    //  if(key != socket.id) // to avoid the deletion of the play because the key will be the sam as the socket id
+					if(currentPlayer.r < value.r){
+
+					      	this.deleteCircle(socket.id);
+					  	/*	currentPlayer.colorR = 255;
+						  	currentPlayer.colorG = 0;
+						  	currentPlayer.colorB = 255;
+						  	currentPlayer.r = 0;*/
 					}
-					  else
-					  	this.deleteCircle(key);
-				
-		 	}
-		 }
+					else
+						this.deleteCircle(key);
+					
+			 	}
+			 }
 
+			}
 		}
 	}
-
-	}
-
-} 
+}
 module.exports = Model;

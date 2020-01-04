@@ -42,7 +42,7 @@ function send(){
 	let	data = {
 		x:mouseX,
 		y:mouseY,
-		r:0, // send the old  one not 60
+		r:0,
 		wid :wid,
 		hei:hei,
 		colorR:0,
@@ -57,42 +57,51 @@ function send(){
 
 function draw(){
 
-	 //	background(51,264,255);
 
-
-	background(255,0,255); //	background(51,264,255);
+	background(51,264,255); //	background(51,264,255);
 
 	let move ; // i use this to move canvas
 
-	// i don't know why i can't acces directely to the value with the socket id
-	//i think because there is a map of map or something i don't understand
-
-	 for (var [key, value] of gamers) {
+    // i don't know why i can't acces directely to the value with the socket id
+	// that after i used json format , so i loop for all the map
+    for (var [key, value] of gamers) {
     	if(key == clientSocket.id)
     		move = value;
     }
-    // in the first time , it doesn't recognize the attributes x,y, ...
-       	if(gamers.size > 0)
-       	// function that shift the origine
+
+    if(gamers.size > 0 && typeof move == 'undefined') { // to check if there is nor return value
+		// from the server in case the player lost i delete it from the map of players(gamers)
+			
+
+       		//clientSocket.emit("gameOver","nothing");
+       		;
+       		fill(0); // i have to do that in the client !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+       		textSize(50);
+			text("GAME OVER", wid/2, hei/2, 300, 300);
+			clientSocket.disconnect(0)
+			//clientSocket.emit("gameOver","nothing");
+      		//clientSocket.destroy();
+    }
+       
+    if(gamers.size > 0 && typeof move != 'undefined'){ // in the first time the map is empty 
+       													  // so avoid the crush, i did this 
+       													 // in the first time , it doesn't recognize the attributes x,y ... cause it's empty
+  		// function that shift the origine
        	// so it take care to put the circle(x,y) in the midle
        	//half - any position of x take of origon to this difference difference
-  			translate(wid/2-move.x,hei/2-move.y); 
-
+  		translate(wid/2-move.x,hei/2-move.y); 
+  	}
+  		// to print all the circles
 	for (var [key, value] of gamers) { // loop to every object
-	
-			fill(value.colorR,value.colorG,value.colorB);
-	   		ellipse(value.x,value.y,value.r,value.r);
-   }
-
+					/*if(value.r == 0){
+						
+					}else{*/
+		fill(value.colorR,value.colorG,value.colorB);
+		ellipse(value.x,value.y,value.r,value.r);	
+					
+	}
+		   // send the new data
 	send();
 
+
 }
-
-
-/*var socket = require('socket.io-client')('http://localhost');
-socket.on('connect', function(){});
-socket.on('event', function(data){});
-socket.on('disconnect', function(){});
-
-*/
-
