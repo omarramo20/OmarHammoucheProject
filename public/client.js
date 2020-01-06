@@ -16,24 +16,38 @@ var dt = {
 // i couldn't acces to width and height from the other class , that's why i'm gonna pass it in data
 let wid = 900; //window.innerWidth;
 let hei = 900;
+let teste ;
 function setup(){ 
 
 background(255);
 
 clientSocket = 	io('http://localhost:3000');
 clientSocket.on("sendToClient",newData); // you  wait for this event "sendToClient" then execute this function
+teste  = clientSocket.on("youWIn",endGame);
 
 createCanvas(900,900);
-//
+
 //createCanvas(window.innerWidth,window.innerHeight);
 
 }
 
-	function newData(allGamers){
+function newData(allGamers){
 
 	let transitString = JSON.stringify(Array.from(allGamers));
 	//console.log(transitString)
 	gamers = new Map(JSON.parse(transitString));
+
+	console.log("TEST RECEIVE = "+ teste);
+
+}
+
+function endGame(data){
+	console.log("we are here");
+		console.log("TEST = "+ teste);
+    fill(0); // i have to do that in the client !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    textSize(200);
+	text("YOU'RE THE WINNER", wid/2, hei/2, 300, 300);
+	clientSocket.disconnect(0)
 
 }
 
@@ -49,7 +63,6 @@ function send(){
 		colorG:0,
 		colorB:0
 	};
-	console.log(" client x : "+ data.x + " y : "+data.y);
 
 	clientSocket.emit("sendToServer",data);
 
@@ -60,7 +73,7 @@ function draw(){
 
 	background(51,264,255); //	background(51,264,255);
 
-	let move ; // i use this to move canvas
+	let move ; // i use this to move cthe anvas
 
     // i don't know why i can't acces directely to the value with the socket id
 	// that after i used json format , so i loop for all the map
@@ -74,7 +87,6 @@ function draw(){
 			
 
        		//clientSocket.emit("gameOver","nothing");
-       		;
        		fill(0); // i have to do that in the client !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
        		textSize(50);
 			text("GAME OVER", wid/2, hei/2, 300, 300);
@@ -82,6 +94,7 @@ function draw(){
 			//clientSocket.emit("gameOver","nothing");
       		//clientSocket.destroy();
     }
+
        
     if(gamers.size > 0 && typeof move != 'undefined'){ // in the first time the map is empty 
        													  // so avoid the crush, i did this 

@@ -7,9 +7,9 @@ const Circle = require('./circle');
 class Controller{
 
 
-	constructor(gamers,position){
+	constructor(gamers,position,historical,onlyGamers){
 
-		let model = new Model(gamers,position);
+		let model = new Model(gamers,position,historical,onlyGamers);
 		
 
 		this.findGamer = (socket) => {

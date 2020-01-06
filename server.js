@@ -14,7 +14,11 @@ app.use(express.static('public')); // public , when public goes to my server , i
 
 console.log("server is running");
 
-const gamers = new Map(); // let
+let gamers = new Map(); // let
+let onlyGamers = new Map(); 
+let historical = new Map(); // i will use this to check the winner, if onlyGamers == 1 and historical > 1 that's
+                           // means more than one were connected and only one still play
+
 
 
 // add a socket connection between the client and the server
@@ -48,12 +52,22 @@ function newConnection(socket){ // whena  connection
 	function newData(data){
 		//console.log("data server = "+ data.x+ " " + data.y);
 		//let controller = new controller(gamers);
-		const control = new Controller(gamers,data);
+		const control = new Controller(gamers,data,historical,onlyGamers); // i pass historical and onlyGamers only to check														  // if we have only one player
 
 		control.findGamer(socket);
-		newCordinates= gamers.get(socket.id);
+		console.log("onlyGamers.size  : " + onlyGamers.size + " historical.size "+ historical.size );
+		if(onlyGamers.size == 1 && historical.size > 1){ // i use onlyGamers because gamers contains the small circles also
 
-		io.sockets.emit("sendToClient",Array.from(gamers));
+				console.log("you win");
+			io.sockets.emit("youWIn",gamers);
+
+
+		}
+		else{
+			io.sockets.emit("sendToClient",Array.from(gamers));
+		}
+
+		
 	}
 
 }
