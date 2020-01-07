@@ -34,12 +34,6 @@ io.sockets.on('connection', newConnection); // i dear with the first event : con
 function newConnection(socket){ // whena  connection
 
 	socket.on('gameOver', function (){
-
-			console.log("game over");
-
-			console.log("game over");
-
-			console.log("game over");
    			socket.disconnect(0);
    			//socket.destroy();
    			//socket.end("end");
@@ -50,18 +44,18 @@ function newConnection(socket){ // whena  connection
 
 
 	function newData(data){
-		//console.log("data server = "+ data.x+ " " + data.y);
-		//let controller = new controller(gamers);
-		const control = new Controller(gamers,data,historical,onlyGamers); // i pass historical and onlyGamers only to check														  // if we have only one player
+		const control = new Controller(gamers,data,historical,onlyGamers); // i pass historical and onlyGamers only to check
+
+		if(onlyGamers.size == 1 && historical.size > 1){
+			onlyGamers.delete(socket.id);
+		}														  // if we have only one player
 
 		control.findGamer(socket);
-		console.log("onlyGamers.size  : " + onlyGamers.size + " historical.size "+ historical.size );
-		if(onlyGamers.size == 1 && historical.size > 1){ // i use onlyGamers because gamers contains the small circles also
+		//console.log("onlyGamers.size  : " + onlyGamers.size + " historical.size "+ historical.size );
+		if(onlyGamers.size == 0 && historical.size > 1){ // i use onlyGamers because gamers contains the small circles also
 
-				console.log("you win");
+			console.log("you win");
 			io.sockets.emit("youWIn",onlyGamers);
-
-
 		}
 		else{
 			io.sockets.emit("sendToClient",Array.from(gamers));

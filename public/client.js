@@ -34,11 +34,8 @@ createCanvas(window.innerWidth,window.innerHeight);
 
 function newData(allGamers){
 
-	let transitString = JSON.stringify(Array.from(allGamers));
-	//console.log(transitString)
-	gamers = new Map(JSON.parse(transitString));
-
-	console.log("TEST RECEIVE = "+ teste);
+	let transitString = JSON.stringify(Array.from(allGamers)); // read the jason format
+	gamers = new Map(JSON.parse(transitString)); // convert jason format to map
 
 }
 // the last event to execute to show the winner
@@ -93,7 +90,7 @@ function draw(){
        		//clientSocket.emit("gameOver","nothing");
        		fill(0); // i have to do that in the client !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
        		textSize(50);
-			text("GAME OVER", wid/2, hei/2, 300, 300);
+			text("GAME OVER", wid/2, hei/2, 300, 400);
 			clientSocket.disconnect(0)
 			//clientSocket.emit("gameOver","nothing");
       		//clientSocket.destroy();
@@ -112,9 +109,6 @@ function draw(){
 
   		// to print all the circles
 	for (var [key, value] of gamers) { // loop to every object
-					/*if(value.r == 0){
-						
-					}else{*/
 		fill(value.colorR,value.colorG,value.colorB);
 		ellipse(value.x,value.y,value.r,value.r);	
 					
@@ -124,7 +118,7 @@ function draw(){
 	// and disconnect the player and the second(last player) it send also one players and show also game over
 	// i'm trying to fix the problem
 
-    if(gamers.size == 1 && typeof move != 'undefined'){
+    if(gamers.size == 0 && typeof move != 'undefined'){
     	    fill(0);
        		textSize(50);
 			text("WINNER", wid/2, hei/2, 300, 300);

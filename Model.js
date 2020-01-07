@@ -69,14 +69,6 @@ class Model{
 			//  nowi create all the others small circles with every player
 			for (let i = 50; i >= 0; i--) {
 			     idSmallCircles = socket.id + i;
-			     //Math.random() * (max - min) + min
-			     //xSmallCircles = Math.floor(Math.random() * (position.wid + position.wid + 1) -position.wid);  // to make the small circle every where
-			     //ySmallCircles = Math.floor(Math.random() * (position.hei + position.hei + 1) -position.hei); // when i move the player
-			    // xSmallCircles =  Math.random() * (position.wid - (- position.wid)) -position.wid;
-			     //if(xSmallCircles < -position.wid)
-			     	//xSmallCircles = position.wid;
-			    // ySmallCircles = Math.random() * (position.hei - (- position.hei) )-position.hei;
-
 			    xSmallCircles = getRandomInt(-position.wid,position.wid);
 			    ySmallCircles = getRandomInt(-position.hei,position.hei);
 			     sRandom = Math.floor(Math.random() * 50);
@@ -88,10 +80,6 @@ class Model{
 
 
 		}
-
-
-
-
 
 		this.Compare =(socket)=> {
 			let currentPlayer  = gamers.get(socket.id);
