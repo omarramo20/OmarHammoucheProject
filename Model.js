@@ -17,7 +17,7 @@ class Model{
 		    sourie.x = position.x - position.wid/2;
 		    sourie.y = position.y - position.hei/2;
 
-		    sourie.x *= 0.02; // to avoid teleportation , to minimize the distance traveled
+		    sourie.x *= 0.02; // minimize the distance traveled, to avoid teleportation 
 		    sourie.y *= 0.02;
 
 		    let gamer = gamers.get(socket.id); 
@@ -38,13 +38,21 @@ class Model{
   		}
 
 
+		function getRandomInt(min, max) {
+		   min = Math.ceil(min);
+		   max = Math.floor(max);
+		  return Math.floor(Math.random() * (max - min)) + min;
+		}
+
+
+
   		this.createGamer =(socket)=> {
 
 
 
-  				position.x = position.wid;
+  				//position.x = position.wid;
 
-  				position.y = position.hei;
+  				//position.y = position.hei;
 
 			let circle = new Circle(position.x,position.y,100);
 			gamers.set(socket.id,circle);
@@ -60,9 +68,17 @@ class Model{
 
 			//  nowi create all the others small circles with every player
 			for (let i = 50; i >= 0; i--) {
-			     idSmallCircles = socket.id +i;
-			     xSmallCircles = Math.floor(Math.random() * (position.wid + position.wid + 1) -position.wid);  // to make the small circle every where
-			     ySmallCircles = Math.floor(Math.random() * (position.hei + position.hei + 1) -position.hei); // when i move the player
+			     idSmallCircles = socket.id + i;
+			     //Math.random() * (max - min) + min
+			     //xSmallCircles = Math.floor(Math.random() * (position.wid + position.wid + 1) -position.wid);  // to make the small circle every where
+			     //ySmallCircles = Math.floor(Math.random() * (position.hei + position.hei + 1) -position.hei); // when i move the player
+			    // xSmallCircles =  Math.random() * (position.wid - (- position.wid)) -position.wid;
+			     //if(xSmallCircles < -position.wid)
+			     	//xSmallCircles = position.wid;
+			    // ySmallCircles = Math.random() * (position.hei - (- position.hei) )-position.hei;
+
+			    xSmallCircles = getRandomInt(-position.wid,position.wid);
+			    ySmallCircles = getRandomInt(-position.hei,position.hei);
 			     sRandom = Math.floor(Math.random() * 50);
 			     let smallCircle = new Circle(xSmallCircles,ySmallCircles,sRandom);
 
@@ -71,7 +87,9 @@ class Model{
 			  }
 
 
-		}	
+		}
+
+
 
 
 
@@ -105,6 +123,9 @@ class Model{
 														// he will directely delete the other player even if the current
 														// player is less then the other and olso will try with something hes been already deleted
 						gamers.delete(key);
+						if(onlyGamers.has(key)){
+							onlyGamers.delete(key);
+						}
 
 					}
 					

@@ -4,6 +4,7 @@ var clientSocket;
 var io;
 
 let gamers = new Map();
+let testeWinner = false;
 
 // object to send data to the server
 var dt = {
@@ -14,8 +15,8 @@ var dt = {
 };
 
 // i couldn't acces to width and height from the other class , that's why i'm gonna pass it in data
-let wid = 900; //window.innerWidth;
-let hei = 900;
+let wid = window.innerWidth;
+let hei = window.innerHeight;
 let teste ;
 function setup(){ 
 
@@ -25,7 +26,7 @@ clientSocket = 	io('http://localhost:3000');
 clientSocket.on("sendToClient",newData); // you  wait for this event "sendToClient" then execute this function
 teste  = clientSocket.on("youWIn",endGame);
 
-createCanvas(900,900);
+createCanvas(window.innerWidth,window.innerHeight);
 
 //createCanvas(window.innerWidth,window.innerHeight);
 
@@ -40,13 +41,11 @@ function newData(allGamers){
 	console.log("TEST RECEIVE = "+ teste);
 
 }
-
+// the last event to execute to show the winner
 function endGame(data){
 	console.log("we are here");
-    fill(0);
-    textSize(200);
-	text("YOU'RE THE WINNER", wid/2, hei/2, 300, 300); // i don't know it doesn't work even if the server send this event
-	clientSocket.disconnect(0)
+  	testeWinner = true; // if tue later i will use the test to print the winner in the screen
+	clientSocket.disconnect(0); // disconnect the client
 
 }
 
@@ -56,14 +55,14 @@ function send(){
 		x:mouseX,
 		y:mouseY,
 		r:0,
-		wid :wid,
+		wid :wid, // i send always the wid just because i don't know how to use it in the others files
 		hei:hei,
 		colorR:0,
 		colorG:0,
 		colorB:0
 	};
 
-	clientSocket.emit("sendToServer",data);
+	clientSocket.emit("sendToServer",data); // i send the data to the server
 
 }
 
@@ -81,7 +80,13 @@ function draw(){
     		move = value;
     }
 
-    if(gamers.size > 0 && typeof move == 'undefined') { // to check if there is nor return value
+    if(testeWinner){ // it works a little bit, it send winner only for the last two players
+    	fill(0);
+   		textSize(100);
+		text("YOU'RE THE WINNER", wid/2, hei/2, 300, 300); // i don't know it doesn't work even if the server send this event
+    }
+
+    if(gamers.size > 0 && typeof move == 'undefined' && testeWinner == false) { // to check if there is nor return value
 		// from the server in case the player lost i delete it from the map of players(gamers)
 			
 
