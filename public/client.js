@@ -43,10 +43,9 @@ function newData(allGamers){
 
 function endGame(data){
 	console.log("we are here");
-		console.log("TEST = "+ teste);
-    fill(0); // i have to do that in the client !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    fill(0);
     textSize(200);
-	text("YOU'RE THE WINNER", wid/2, hei/2, 300, 300);
+	text("YOU'RE THE WINNER", wid/2, hei/2, 300, 300); // i don't know it doesn't work even if the server send this event
 	clientSocket.disconnect(0)
 
 }
@@ -104,6 +103,8 @@ function draw(){
        	//half - any position of x take of origon to this difference difference
   		translate(wid/2-move.x,hei/2-move.y); 
   	}
+
+
   		// to print all the circles
 	for (var [key, value] of gamers) { // loop to every object
 					/*if(value.r == 0){
@@ -113,8 +114,20 @@ function draw(){
 		ellipse(value.x,value.y,value.r,value.r);	
 					
 	}
+
+		// the problem always in the last players, because the first time its delete 1 from the map and send only one 
+	// and disconnect the player and the second(last player) it send also one players and show also game over
+	// i'm trying to fix the problem
+
+    if(gamers.size == 1 && typeof move != 'undefined'){
+    	    fill(0);
+       		textSize(50);
+			text("WINNER", wid/2, hei/2, 300, 300);
+			clientSocket.disconnect(0)
+    }
 		   // send the new data
 	send();
+
 
 
 }

@@ -40,7 +40,7 @@ function newConnection(socket){ // whena  connection
 			console.log("game over");
 
 			console.log("game over");
-   			//socket.disconnect(0);
+   			socket.disconnect(0);
    			//socket.destroy();
    			//socket.end("end");
 	});
@@ -59,7 +59,7 @@ function newConnection(socket){ // whena  connection
 		if(onlyGamers.size == 1 && historical.size > 1){ // i use onlyGamers because gamers contains the small circles also
 
 				console.log("you win");
-			io.sockets.emit("youWIn",gamers);
+			io.sockets.emit("youWIn",onlyGamers);
 
 
 		}

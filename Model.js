@@ -63,7 +63,7 @@ class Model{
 			     idSmallCircles = socket.id +i;
 			     xSmallCircles = Math.floor(Math.random() * (position.wid + position.wid + 1) -position.wid);  // to make the small circle every where
 			     ySmallCircles = Math.floor(Math.random() * (position.hei + position.hei + 1) -position.hei); // when i move the player
-			     sRandom = Math.floor(Math.random() * 35);
+			     sRandom = Math.floor(Math.random() * 50);
 			     let smallCircle = new Circle(xSmallCircles,ySmallCircles,sRandom);
 
 			     gamers.set(idSmallCircles,smallCircle);
@@ -72,10 +72,6 @@ class Model{
 
 
 		}	
-		// to delete any circle ( players or bonus)
-		this.deleteCircle =(key)=> {
-			gamers.delete(key);
-		}
 
 
 
@@ -86,28 +82,19 @@ class Model{
 
 			for (var [key, value] of gamers) { 
 
-			    if(key != socket.id){ // to avoid the comparaison with him self( client), 
+			    //if(key != socket.id){ // to avoid the comparaison with him self( client), 
 			    					// else the circle will grow all the time and also will delete him self
 					// calculate distance between two points( circles)
 			    	distance = Math.pow((currentPlayer.x-value.x),2)+ Math.pow((currentPlayer.y-value.y),2); 
 			    	distance = Math.sqrt(distance);
 			    	
-			    	console.log("");
-			    	console.log("currentPlayer.r : "+currentPlayer.r+ " value.r : "+value.r);
-			    	console.log("distance abs : "+ distance);
-			    	console.log("both : "+ (value.r /2+ currentPlayer.r/2));
-
-			    	console.log("gamers size "+ gamers.size);
-			    	
-					if(distance < currentPlayer.r/2 + value.r/2){
-					    console.log("petite--------------------------------------------------------------------------------");
+					if(distance < currentPlayer.r/2 + value.r/2){ // if the distance between two circles less than sum of there rays
+						if(key != socket.id)
 						currentPlayer.r += value.r* 0.1;
 						gamers.set(socket.id,currentPlayer);
-						console.log("distance abs : "+ distance);
-					    //  if(key != socket.id) // to avoid the deletion of the play because the key will be the sam as the socket id
+					 
 					if(currentPlayer.r < value.r){
-
-					      	this.deleteCircle(socket.id);
+					      	gamers.delete(socket.id);
 					      	onlyGamers.delete(socket.id);
 					  	/*	currentPlayer.colorR = 255;
 						  	currentPlayer.colorG = 0;
@@ -116,13 +103,13 @@ class Model{
 					}
 					else if(currentPlayer.r > value.r){ // i use this condition instead of else because if not less 
 														// he will directely delete the other player even if the current
-														// player is less then the other
-						this.deleteCircle(key);
+														// player is less then the other and olso will try with something hes been already deleted
+						gamers.delete(key);
 
 					}
 					
 			 	}
-			 }
+			 //}
 
 			}
 		}
